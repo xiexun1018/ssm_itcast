@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.itcast.ssm.dao.OrderDao">
+    <resultMap id="orders" type="cn.itcast.ssm.domain.Orders">
+        <id property="id" column="id"/>
+        <result property="orderNum" column="orderNum"/>
+        <result property="orderTime" column="orderTime"/>
+        <result property="orderStatus" column="orderStatus"/>
+        <result property="peopleCount" column="peopleCount"/>
+        <result property="payType" column="payType"/>
+        <result property="orderDesc" column="orderDesc"/>
+        <association property="product"
+                     javaType="cn.itcast.ssm.domain.Product"
+                     select="cn.itcast.ssm.dao.ProductDao.findById"
+                     column="productId">
+        </association>
+        <association property="member"
+                     javaType="cn.itcast.ssm.domain.Member"
+                     select="cn.itcast.ssm.dao.MemberDao.findById"
+                     column="memberId">
+        </association>
+        <collection property="travellers"
+                    ofType="traveller"
+                    select="cn.itcast.ssm.dao.TravellerDao.findByOrdersId"
+                    column="id">
+        </collection>
+    </resultMap>
+    <select id="findAll" resultMap="orders">
+        select * from orders
+    </select>
+    <select id="findById" resultMap="orders">
+        select * from orders where id=#{ordersId}
+    </select>
+</mapper>
